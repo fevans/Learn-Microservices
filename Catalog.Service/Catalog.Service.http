@@ -1,0 +1,47 @@
+@hostAddress = http://localhost:5276
+
+### Get all items
+GET {{hostAddress}}/items
+
+### Get item by id
+@itemId = fd1a2898-e2d4-4b1f-bb2b-40b0067a56d2
+GET {{hostAddress}}/items/{{itemId}}
+
+### Get item by id
+@itemId2 = 736abb49-d8f5-4169-9ecc-e49c320ed279
+GET {{hostAddress}}/items/{{itemId2}}
+
+### Create item
+POST {{hostAddress}}/items
+Content-Type: application/json
+
+{
+  "name": "Sample Item",
+  "description": "A sample item description",
+  "price": 29.99
+}
+
+### Create another item
+POST {{hostAddress}}/items
+Content-Type: application/json
+
+{
+  "name": "Another Starter Sword",
+  "description": "Another basic weapon for new players.",
+  "price": 25.00
+}
+
+### Update item
+PUT {{hostAddress}}/items/{{itemId2}}
+Content-Type: application/json
+
+{
+  "name": "Updated Item",
+  "description": "Updated description",
+  "price": 39.99
+}
+
+### Delete item
+DELETE {{hostAddress}}/items/{{itemId}}
+
+###

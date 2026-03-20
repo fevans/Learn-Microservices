@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Src/">
+    <File Path="compose.yaml" />
+    <Project Path="src/Catalog.Service/Catalog.Service.csproj" />
+    <Project Path="src/GamePlatform.Common/GamePlatform.Common.csproj" />
+  </Folder>
+</Solution>

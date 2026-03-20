@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <AzureFunctionsVersion>V4</AzureFunctionsVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>GamePlatform.Common</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>evf</Authors>
+        <Description>Shared infrastructure for game platform microservices.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
+        <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.51.0" />
+        <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.50.0" />
+        <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="2.1.0" />
+        <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.7" />
+        <PackageReference Include="MongoDB.Driver" Version="3.7.1" />
+    </ItemGroup>
+
+</Project>
