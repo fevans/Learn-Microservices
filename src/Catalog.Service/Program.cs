@@ -1,5 +1,6 @@
 using Catalog.Service;
 using Catalog.Service.Extensions;
+using GamePlatform.Common.Entities;
 using GamePlatform.Common.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -13,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddServiceControllers()
     .AddMongo(builder.Configuration)
-    .AddCatalogRepositories()
+    .AddMongoRepository<CatalogItem>(collectionName: "items")
     .AddEndpointsApiExplorer()
     .AddSwaggerGen();
 

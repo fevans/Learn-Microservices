@@ -3,5 +3,6 @@
     <File Path="compose.yaml" />
     <Project Path="src/Catalog.Service/Catalog.Service.csproj" />
     <Project Path="src/GamePlatform.Common/GamePlatform.Common.csproj" />
+    <Project Path="src/Inventory.Service/Inventory.Service.csproj" />
   </Folder>
 </Solution>
