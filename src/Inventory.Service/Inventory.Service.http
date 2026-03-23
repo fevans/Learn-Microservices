@@ -1,0 +1,9 @@
+@hostAddress = http://localhost:5104
+
+
+###
+POST {{hostAddress}}/items
+Content-Type: application/json
+
+{ "userId": "D9BFCB35-696A-42FD-9D64-75440635F467", "catalogItemId": "D9BFCB35-696A-42FD-9D64-75440635F467", "quantity": 5 }
+
