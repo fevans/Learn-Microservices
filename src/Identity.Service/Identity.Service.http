@@ -1,0 +1,20 @@
+@hostAddress = https://localhost:5003
+
+# 1. Register a new user
+POST {{hostAddress}}/users
+Content-Type: application/json
+
+{
+  "username": "player4",
+  "email": "player4@example.com",
+  "password": "Password",
+  "startingGil": 150.00
+}
+### 201 Created with UserDto
+
+# 2. List all users
+GET {{hostAddress}}/users
+
+###
+@userId = 4970aeab-dd6e-4afa-8687-c5385316d95a
+DELETE {{hostAddress}}/users/{{userId}}
