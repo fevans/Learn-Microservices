@@ -1,4 +1,4 @@
-@hostAddress = http://localhost:5276
+@hostAddress = http://localhost:5001
 
 ### Get all items
 GET {{hostAddress}}/items

@@ -6,10 +6,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>GamePlatform.Common</PackageId>
-        <Version>1.0.1</Version>
+        <Version>1.0.6</Version>
         <Authors>evf</Authors>
         <Description>Shared infrastructure for game platform microservices.</Description>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>/Users/effevans/.nuget/local-feed</RepositoryUrl>
+        <RepositoryType>folder</RepositoryType>
 
     </PropertyGroup>
 
@@ -19,6 +21,7 @@
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.3" />
         <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
         <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.51.0" />
         <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.50.0" />

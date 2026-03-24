@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
@@ -43,4 +44,23 @@ public static class ConfigureServices
         
         return services;
     }
+    //
+    // public static IServiceCollection AddMassTransmitService(this IServiceCollection services,
+    //     IConfiguration configuration)
+    // {
+    //     services.AddMassTransit(x =>
+    //     {
+    //         x.UsingRabbitMq((ctx, cfg) =>
+    //         {
+    //             cfg.Host(configuration["RabbitMQSettings:Host"], h =>
+    //             {
+    //                 h.Username("guest");
+    //                 h.Password("guest");
+    //             });
+    //
+    //             cfg.ConfigureEndpoints(ctx);
+    //         });
+    //     });
+    //     return services;
+    // }
 }

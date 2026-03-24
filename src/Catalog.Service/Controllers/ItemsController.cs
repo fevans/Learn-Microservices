@@ -1,9 +1,10 @@
 using Catalog.Service.Dtos;
 
 using Catalog.Service.Extensions;
-
+using GamePlatform.Catalog.Contracts;
 using GamePlatform.Common.Entities;
 using GamePlatform.Common.Repositories;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace Catalog.Service.Controllers
 {
     [Route("items")]
     [ApiController]
-    public class ItemsController(IRepository<CatalogItem> repository) : ControllerBase
+    public class ItemsController(IRepository<CatalogItem> repository, IPublishEndpoint publishEndpoint) : ControllerBase
     {
         //private readonly InMemoryRepository _repository;
         // GET: api/<ItemsController>
@@ -47,6 +48,8 @@ namespace Catalog.Service.Controllers
                 CreatedDate = DateTimeOffset.UtcNow
             };
             await repository.CreateAsync(item);
+            
+            await publishEndpoint.Publish(new CatalogItemCreated(item.Id, item.Name, item.Description, item.Price));
 
             return CreatedAtRoute(nameof(GetByIdAsync),
                 new { id = item .Id },
@@ -71,6 +74,11 @@ namespace Catalog.Service.Controllers
                 CreatedDate = existing.CreatedDate
             };
             await repository.UpdateAsync(updated);
+            await publishEndpoint.Publish(new CatalogItemUpdated(
+                updated.Id,
+                updated.Name,
+                updated.Description,
+                updated.Price));
             return NoContent();
         }
         
@@ -81,6 +89,7 @@ namespace Catalog.Service.Controllers
             var existing = await repository.GetAsync(id);
             if (existing is null) return NotFound();
             await repository.RemoveAsync(id);
+            await publishEndpoint.Publish(new CatalogItemDeleted(id));
             return NoContent();
         }
     }

@@ -1,6 +1,10 @@
 using GamePlatform.Common.Extensions;
-using Inventory.Service.Extensions;
 using Inventory.Service.Models;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+
+BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +14,10 @@ builder.Services.AddControllers( o => o.SuppressAsyncSuffixInActionNames = false
 builder.Services.AddOpenApi();
 
 builder.Services.AddMongo(builder.Configuration)
-    .AddMongoRepository<InventoryItem>(collectionName: "inventoryitems");
-builder.Services.AddHttpClientAndResiliencePolicy(builder.Configuration);
+    .AddMongoRepository<InventoryItem>(collectionName: "inventoryitems")
+    .AddMongoRepository<CatalogItem>(collectionName: "catalogitems");
+//builder.Services.AddHttpClientAndResiliencePolicy(builder.Configuration);
+builder.Services.AddMassTransitWithRabbitMq(builder.Configuration, registerConsumers: true);
 
 
 var app = builder.Build();

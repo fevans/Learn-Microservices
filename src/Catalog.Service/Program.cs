@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
+
 using MongoDB.Driver;
 
 BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
@@ -15,6 +16,8 @@ builder.Services
     .AddServiceControllers()
     .AddMongo(builder.Configuration)
     .AddMongoRepository<CatalogItem>(collectionName: "items")
+    //.AddMassTransmitService(builder.Configuration)
+    .AddMassTransitWithRabbitMq(builder.Configuration)
     .AddEndpointsApiExplorer()
     .AddSwaggerGen();
 
