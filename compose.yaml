@@ -10,6 +10,7 @@
     environment:
       - MongoDbSettings__Host=mongodb
       - RabbitMqSettings__Host=rabbitmq
+      - AllowedOrigins=http://localhost:3000
     networks:
       - catalog-network
     restart: unless-stopped

@@ -13,6 +13,16 @@ BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
+    .AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy =>
+        {
+            policy
+                .WithOrigins(builder.Configuration["AllowedOrigins"]!)
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    })
     .AddServiceControllers()
     .AddMongo(builder.Configuration)
     .AddMongoRepository<CatalogItem>(collectionName: "items")
@@ -30,6 +40,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // configure http request pipeline
+app.UseRouting();
+app.UseCors();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

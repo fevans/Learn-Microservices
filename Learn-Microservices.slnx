@@ -5,5 +5,6 @@
     <Project Path="src/GamePlatform.Catalog.Contracts/GamePlatform.Catalog.Contracts.csproj" />
     <Project Path="src/GamePlatform.Common/GamePlatform.Common.csproj" />
     <Project Path="src/Inventory.Service/Inventory.Service.csproj" />
+    <File Path="src/frontend/package.json" />
   </Folder>
 </Solution>
