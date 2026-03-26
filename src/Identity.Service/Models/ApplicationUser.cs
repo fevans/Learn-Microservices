@@ -7,4 +7,5 @@ namespace Identity.Service.Models;
 public class ApplicationUser : MongoIdentityUser<Guid>
 {
     public decimal Gil { get; set; }
+    public  decimal GilSpent { get; set; }
 }

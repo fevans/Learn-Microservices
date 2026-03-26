@@ -483,3 +483,10 @@ $RECYCLE.BIN/
 
 # MongoDB data directories
 **/data/
+
+**/Properties
+**/launchSettings.json
+**/*.user
+.vs/
+
+

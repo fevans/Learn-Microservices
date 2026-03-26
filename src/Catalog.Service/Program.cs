@@ -1,10 +1,10 @@
 using Catalog.Service;
+using Catalog.Service.Authorization;
 using Catalog.Service.Extensions;
 using GamePlatform.Common.Entities;
 using GamePlatform.Common.Extensions;
 using GamePlatform.Common.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
@@ -15,11 +15,9 @@ BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard
 
 var builder = WebApplication.CreateBuilder(args);
 // Catalog.Service/Program.cs
-builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+builder.Services.AddSingleton<IAuthorizationHandler, MinimumGilHandler>();
 builder.Services
     .AddGamePlatformAuthentication(builder.Configuration)
-    .AddAuthorization()
     .AddCors(options =>
     {
         options.AddDefaultPolicy(policy =>
@@ -33,7 +31,6 @@ builder.Services
     .AddServiceControllers()
     .AddMongo(builder.Configuration)
     .AddMongoRepository<CatalogItem>(collectionName: "items")
-    //.AddMassTransmitService(builder.Configuration)
     .AddMassTransitWithRabbitMq(builder.Configuration)
     .AddEndpointsApiExplorer()
     .AddSwaggerGen();

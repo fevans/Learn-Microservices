@@ -1,4 +1,4 @@
-@hostAddress = https://localhost:5003
+@hostAddress = https://localhost:5005
 
 # 1. Register a new user
 POST {{hostAddress}}/users
@@ -13,8 +13,31 @@ Content-Type: application/json
 ### 201 Created with UserDto
 
 # 2. List all users
+@accessToken = eyJhbGciOiJSUzI1NiIsImtpZCI6IjhERENDQTBBOTc4N0VBQUUxQUJBNEQzQTE0MTBGMjE0IiwidHlwIjoiYXQrand0In0.eyJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MDA1IiwibmJmIjoxNzc0NTQ0NTQwLCJpYXQiOjE3NzQ1NDQ1NDAsImV4cCI6MTc3NDU0ODE0MCwiYXVkIjpbImNhdGFsb2ciLCJpZGVudGl0eSIsImludmVudG9yeSJdLCJzY29wZSI6WyJjYXRhbG9nLmZ1bGxhY2Nlc3MiLCJpZGVudGl0eS5mdWxsYWNjZXNzIiwiaW52ZW50b3J5LmZ1bGxhY2Nlc3MiLCJvcGVuaWQiLCJwcm9maWxlIl0sImFtciI6WyJwd2QiXSwiY2xpZW50X2lkIjoicG9zdG1hbiIsInN1YiI6IjExY2NjMjFmLTE5Y2MtNDljMi04Y2FjLWY2YmU2ZWZhNmE0NiIsImF1dGhfdGltZSI6MTc3NDU0NDU0MCwiaWRwIjoibG9jYWwiLCJqdGkiOiI5MTc4OTVFMENBODVBNDE5NDZENzVCNUI0MUE1MTI3MSJ9.eWbqE_8MFemXBFbXsUt42cTcOQ53jMtEAFJyPNybjf7WTEWkDuSvySK2tfnTEXSmd83efoMkvNnOdw7cmZfJMQZ_8JSHH2yhBp36aC1FVqNnmSda0qGi9m4wJ1YQARx3fJCGpoZkoE1gw2WXAYgw-TIEBC2biAMVjNhRKL_G8rL6mK50hzDtym-cuZNZ0JwcRHhyKRE5B-52jUrpV_Bd7aYHhI5jcm-aJl-6sBAAAgnEfeBwi7QK9FmDQYZr8MhFlEjReNRTwzZHQyu45eO6DuayZiP1wjquLY1V-3gl4dj1nehUmmL4Y2EdqtXnaeCWqsj-eb16-SQiP0Y2DHHzCw
 GET {{hostAddress}}/users
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+###
 
+POST https://localhost:5005/connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password
+&client_id=postman
+&client_secret=NotASecret
+&username=player1
+&password=Pass1234
+&scope=openid profile catalog.fullaccess inventory.fullaccess identity.fullaccess
 ###
 @userId = 4970aeab-dd6e-4afa-8687-c5385316d95a
 DELETE {{hostAddress}}/users/{{userId}}
+
+###
+POST https://localhost:5005/users
+Content-Type: application/json
+
+{
+  "username": "player1",
+  "email": "player1@example.com",
+  "password": "Pass1234"
+}

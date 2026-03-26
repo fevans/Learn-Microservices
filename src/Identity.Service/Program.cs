@@ -1,8 +1,8 @@
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
-using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using GamePlatform.Common.Identity;
 using Identity.Service;
+using Identity.Service.Extensions;
 using Identity.Service.Models;
 using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson.Serialization;
@@ -47,10 +47,13 @@ builder.Services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid
     .AddRoleManager<RoleManager<ApplicationRole>>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication()
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = "Cookies";
+        options.DefaultChallengeScheme = "Cookies";
+    })
     .AddCookie("Cookies");
-builder.Services.AddGamePlatformAuthentication(builder.Configuration)
-    .AddAuthorization();
+builder.Services.AddGamePlatformAuthentication(builder.Configuration);
 
 
 // After Identity registration, before builder.Build()
@@ -64,10 +67,11 @@ builder.Services
         options.Events.RaiseSuccessEvents     = true;
     })
     .AddAspNetIdentity<ApplicationUser>()
+    .AddProfileService<CustomProfileService>()
     .AddInMemoryIdentityResources(IdentityServerConfig.IdentityResources)
     .AddInMemoryApiScopes(IdentityServerConfig.ApiScopes)
     .AddInMemoryApiResources(IdentityServerConfig.ApiResources)
-    .AddInMemoryClients(IdentityServerConfig.Clients)
+    .AddInMemoryClients(IdentityServerConfig.Clients(builder.Configuration))
     .AddDeveloperSigningCredential(); // ← dev only; replaced with real cert in Section 29
 
 builder.Services.AddCors(options =>
@@ -85,6 +89,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+//Seed  roles - after app.Build
+await app.SeedRolesAsync();
 
 if (app.Environment.IsDevelopment())
 {

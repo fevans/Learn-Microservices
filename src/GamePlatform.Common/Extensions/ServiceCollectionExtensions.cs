@@ -11,8 +11,6 @@ namespace GamePlatform.Common.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    
-
     public static IServiceCollection AddMongoRepository<T>(this IServiceCollection services, string collectionName)
         where T : IEntity
     {

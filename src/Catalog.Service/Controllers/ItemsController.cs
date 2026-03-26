@@ -3,6 +3,7 @@ using Catalog.Service.Dtos;
 using Catalog.Service.Extensions;
 using GamePlatform.Catalog.Contracts;
 using GamePlatform.Common.Entities;
+using GamePlatform.Common.Identity;
 using GamePlatform.Common.Repositories;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
@@ -14,16 +15,17 @@ namespace Catalog.Service.Controllers
 {
     [Route("items")]
     [ApiController]
-    [Authorize] 
     public class ItemsController(IRepository<CatalogItem> repository, IPublishEndpoint publishEndpoint) : ControllerBase
     {
         //private readonly InMemoryRepository _repository;
         // GET: api/<ItemsController>
         [HttpGet]
+        [Authorize(Policy = Policies.Read)]
         public async Task<ActionResult<IEnumerable<CatalogItemDto>>> GetAllAsync()
             => Ok ((await repository.GetAllAsync()).Select(item => item.AsDto()));
         
         // GET /items/{id}
+        [Authorize(Policy = Policies.Read)]
         [HttpGet("{id:guid}", Name = nameof(GetByIdAsync))]
         public async Task<ActionResult<CatalogItemDto>> GetByIdAsync(Guid id)
         {
@@ -35,6 +37,7 @@ namespace Catalog.Service.Controllers
         
         // POST /items
         [HttpPost]
+        [Authorize(Policy = Policies.Write)]
         public async Task<ActionResult<CatalogItemDto>> CreateAsync(CreateItemDto dto)
         {
             if (dto.Price <= 0)
@@ -60,6 +63,7 @@ namespace Catalog.Service.Controllers
         
         // PUT /items/{id}
         [HttpPut("{id:guid}")]
+        [Authorize(Policy = Policies.Write)]
         public async Task<IActionResult> Update(Guid id, UpdateItemDto dto)
         {
             if (dto.Price <= 0)
@@ -86,6 +90,7 @@ namespace Catalog.Service.Controllers
         
         // DELETE /items/{id}
         [HttpDelete("{id:guid}")]
+        [Authorize(Policy = Policies.Write)]
         public async Task<IActionResult> Delete(Guid id)
         {
             var existing = await repository.GetAsync(id);
@@ -94,5 +99,10 @@ namespace Catalog.Service.Controllers
             await publishEndpoint.Publish(new CatalogItemDeleted(id));
             return NoContent();
         }
+        
+        [HttpGet("premium")]
+        [Authorize(Policy = "VeteranPlayer")]
+        public IActionResult GetPremiumItems()
+            => Ok(new[] { "Legendary Sword", "Dragon Armor" });
     }
 }

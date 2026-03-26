@@ -1,4 +1,5 @@
 using Identity.Service.Dtos;
+using Identity.Service.Extensions;
 using Identity.Service.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -55,7 +56,10 @@ public class UsersController (UserManager<ApplicationUser> userManager): Control
         {
             return BadRequest(result.Errors);
         }
-
+        
+        // Automatically assign player role
+        await userManager.AddToRoleAsync(user, Roles.Player);
+        
         return CreatedAtRoute(nameof(GetByIdAsync),
             new { id = user.Id },
             user.AsDto());

@@ -9,6 +9,7 @@ public static class IdentityServerConfig
     [
         new IdentityResources.OpenId(),
         new IdentityResources.Profile(),
+        new IdentityResource("roles", "User roles", new[] { "role" })
     ];
     
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -23,19 +24,22 @@ public static class IdentityServerConfig
     [
         new ApiResource("catalog")
         {
-            Scopes = { "catalog.fullaccess" }
+            Scopes = { "catalog.fullaccess" },
+            UserClaims = { "role" }
         },
         new ApiResource("inventory")
         {
-            Scopes = { "inventory.fullaccess" }
+            Scopes = { "inventory.fullaccess" },
+            UserClaims = { "role" }
         },
         new ApiResource("identity")
         {
-            Scopes = { "identity.fullaccess" }
+            Scopes = { "identity.fullaccess" },
+            UserClaims = { "role" }
         },
     ];
     
-    public static IEnumerable<Client> Clients =>
+    public static IEnumerable<Client> Clients (IConfiguration config ) =>
     [
         // Postman — for testing with client credentials (no user required)
         new Client
@@ -43,7 +47,8 @@ public static class IdentityServerConfig
             ClientId     = "postman-client",
             ClientName   = "Postman Client Credentials",
             AllowedGrantTypes = GrantTypes.ClientCredentials,
-            ClientSecrets = { new Secret("NotASecret".Sha256()) },
+            ClientSecrets = { 
+                new Secret(config["ClientSecrets:PostmanSecret"]!.Sha256()) },
             AllowedScopes =
             {
                 "catalog.fullaccess",
@@ -58,15 +63,20 @@ public static class IdentityServerConfig
             ClientId     = "postman",
             ClientName   = "Postman",
             AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-            ClientSecrets = { new Secret("NotASecret".Sha256()) },
+            ClientSecrets =
+            {
+                new Secret(config["ClientSecrets:PostmanSecret"]!.Sha256())
+            },
             AllowedScopes =
             {
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile,
+                "roles",
                 "catalog.fullaccess",
                 "inventory.fullaccess",
                 "identity.fullaccess",
-            }
+            },
+            AlwaysIncludeUserClaimsInIdToken = true
         },
 
         // React SPA — Authorization Code + PKCE

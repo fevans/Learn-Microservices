@@ -1,9 +1,9 @@
 using Identity.Service.Dtos;
 using Identity.Service.Models;
 
-namespace Identity.Service;
+namespace Identity.Service.Extensions;
 
-public static class Extensions
+public static class DtoExtensions
 {
     public static UserDto AsDto(this ApplicationUser user) =>
         new(
