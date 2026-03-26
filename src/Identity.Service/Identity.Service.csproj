@@ -8,7 +8,9 @@
 
     <ItemGroup>
         <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="7.0.0" />
-        <PackageReference Include="GamePlatform.Common" Version="1.0.6" />
+        <PackageReference Include="Duende.IdentityServer" Version="7.4.7" />
+        <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.4.7" />
+        <PackageReference Include="GamePlatform.Common" Version="1.0.7" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="10.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />

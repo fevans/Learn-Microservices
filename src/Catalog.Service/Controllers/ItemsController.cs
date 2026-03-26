@@ -5,6 +5,7 @@ using GamePlatform.Catalog.Contracts;
 using GamePlatform.Common.Entities;
 using GamePlatform.Common.Repositories;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace Catalog.Service.Controllers
 {
     [Route("items")]
     [ApiController]
+    [Authorize] 
     public class ItemsController(IRepository<CatalogItem> repository, IPublishEndpoint publishEndpoint) : ControllerBase
     {
         //private readonly InMemoryRepository _repository;

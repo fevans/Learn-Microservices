@@ -1,5 +1,7 @@
 using GamePlatform.Common.Extensions;
+using GamePlatform.Common.Identity;
 using Inventory.Service.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
@@ -11,7 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services
     .AddControllers(o => o.SuppressAsyncSuffixInActionNames = false);
-    builder.Services.AddCors(options =>
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+builder.Services
+    .AddGamePlatformAuthentication(builder.Configuration)
+    .AddAuthorization()
+    .AddCors(options =>
     {
         options.AddDefaultPolicy(policy =>
         {
@@ -24,9 +31,8 @@ builder.Services
     .AddOpenApi()
     .AddMongo(builder.Configuration)
     .AddMongoRepository<InventoryItem>(collectionName: "inventoryitems")
-    .AddMongoRepository<CatalogItem>(collectionName: "catalogitems");
-//builder.Services.AddHttpClientAndResiliencePolicy(builder.Configuration);
-builder.Services.AddMassTransitWithRabbitMq(builder.Configuration, registerConsumers: true);
+    .AddMongoRepository<CatalogItem>(collectionName: "catalogitems") 
+    .AddMassTransitWithRabbitMq(builder.Configuration, registerConsumers: true);
 
 
 var app = builder.Build();
@@ -38,6 +44,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

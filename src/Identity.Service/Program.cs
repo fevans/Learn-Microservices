@@ -1,6 +1,8 @@
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using GamePlatform.Common.Identity;
+using Identity.Service;
 using Identity.Service.Models;
 using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson.Serialization;
@@ -39,12 +41,34 @@ var mongoDbIdentityConfig = new MongoDbIdentityConfiguration
 // Add Data Protection services (required by Identity token providers)
 builder.Services.AddDataProtection();
 
-builder.Services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(
-        mongoDbIdentityConfig)
+builder.Services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfig)
     .AddUserManager<UserManager<ApplicationUser>>()
     .AddSignInManager<SignInManager<ApplicationUser>>()
     .AddRoleManager<RoleManager<ApplicationRole>>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication()
+    .AddCookie("Cookies");
+builder.Services.AddGamePlatformAuthentication(builder.Configuration)
+    .AddAuthorization();
+
+
+// After Identity registration, before builder.Build()
+builder.Services
+    .AddIdentityServer(options =>
+    {
+        options.Authentication.CookieAuthenticationScheme = "Cookies";
+        options.Events.RaiseErrorEvents       = true;
+        options.Events.RaiseInformationEvents = true;
+        options.Events.RaiseFailureEvents     = true;
+        options.Events.RaiseSuccessEvents     = true;
+    })
+    .AddAspNetIdentity<ApplicationUser>()
+    .AddInMemoryIdentityResources(IdentityServerConfig.IdentityResources)
+    .AddInMemoryApiScopes(IdentityServerConfig.ApiScopes)
+    .AddInMemoryApiResources(IdentityServerConfig.ApiResources)
+    .AddInMemoryClients(IdentityServerConfig.Clients)
+    .AddDeveloperSigningCredential(); // ← dev only; replaced with real cert in Section 29
 
 builder.Services.AddCors(options =>
 {
@@ -69,6 +93,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+app.UseIdentityServer();   // ← must remain before UseAuthentication
+app.UseAuthentication();   // ← who are you?
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

@@ -1,12 +1,14 @@
 using GamePlatform.Common.Repositories;
 using Inventory.Service.Dtos;
 using Inventory.Service.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Service.Controllers;
 
 [ApiController]
 [Route("items")]
+[Authorize]
 public class ItemsController(IRepository<InventoryItem> inventoryItemsRepo,
     IRepository<CatalogItem> catalogItemsRepo) : ControllerBase
 {

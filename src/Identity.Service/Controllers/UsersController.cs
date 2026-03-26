@@ -1,5 +1,6 @@
 using Identity.Service.Dtos;
 using Identity.Service.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ public class UsersController (UserManager<ApplicationUser> userManager): Control
 {
     // GET /users
     [HttpGet]
+    [Authorize]
     public ActionResult<IEnumerable<UserDto>> Get()
     {
         var users = userManager.Users.ToList().Select(u => u.AsDto());
@@ -19,6 +21,7 @@ public class UsersController (UserManager<ApplicationUser> userManager): Control
     
     
     // GET /users/{id}
+    [Authorize]
     [HttpGet("{id}", Name = nameof(GetByIdAsync))]
     public async Task<ActionResult<UserDto>> GetByIdAsync(Guid id)
     {
@@ -28,6 +31,7 @@ public class UsersController (UserManager<ApplicationUser> userManager): Control
     
     // POST /users
     [HttpPost]
+    [AllowAnonymous]
     public async Task<ActionResult<UserDto>> RegisterAsync(RegisterUserDto dto)
     {
         var existingUser = await userManager.FindByEmailAsync(dto.Email);
@@ -58,6 +62,7 @@ public class UsersController (UserManager<ApplicationUser> userManager): Control
     }
     
     // DELETE /users/{id}
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
