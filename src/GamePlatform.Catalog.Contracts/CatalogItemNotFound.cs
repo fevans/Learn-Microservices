@@ -1,3 +1,3 @@
 namespace GamePlatform.Catalog.Contracts;
 
-public record CatalogItemNotFound(Guid CatalogItemId);
+public record CatalogItemNotFound(  Guid CorrelationId, Guid CatalogItemId);
