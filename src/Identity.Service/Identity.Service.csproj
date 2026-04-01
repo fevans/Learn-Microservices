@@ -12,6 +12,7 @@
         <PackageReference Include="Duende.IdentityServer" Version="7.4.7" />
         <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.4.7" />
         <PackageReference Include="GamePlatform.Common" Version="1.0.9" />
+        <PackageReference Include="GamePlatform.Identity.Contracts" Version="1.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.1.5" />

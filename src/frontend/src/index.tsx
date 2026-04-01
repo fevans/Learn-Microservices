@@ -1,15 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { AuthProvider } from 'react-oidc-context';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { oidcConfig } from './auth/authConfig';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+      <AuthProvider {...oidcConfig}>
+        <App />
+      </AuthProvider>
   </React.StrictMode>
 );
 

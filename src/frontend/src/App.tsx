@@ -1,22 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-// frontend/src/App.tsx
-import { CatalogItemList } from './components/CatalogItemsList';
-import { InventoryList } from './components/InventoryList';
+import { useAuth } from 'react-oidc-context';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { LoginCallback }   from './pages/LoginCallback';
+import { LogoutCallback }  from './pages/LogoutCallback';
+import { RegisterForm }    from './components/RegisterForm';
+import { UserProfile }     from './components/UserProfile';
+import { CatalogItemList } from './components/CatalogItemList';
+import { InventoryList }   from './components/InventoryList';
+import { LogoutButton }    from './components/LogoutButton';
 
-// Hardcoded for demo — will come from auth in Section 12
-const TEST_USER_ID = '00000000-0000-0000-0000-000000000001';
+function ProtectedApp() {
+    const auth = useAuth();
+
+    if (auth.isLoading)       return <p>Loading...</p>;
+    if (!auth.isAuthenticated) return <Navigate to="/register" replace />;
+    if (!auth.user)           return <p>Loading user data...</p>;
+
+    return (
+        <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
+            <header style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <h1>Play Economy</h1>
+                <div>
+                    <UserProfile />
+                    <LogoutButton />
+                </div>
+            </header>
+            <main>
+                <CatalogItemList />
+                <hr />
+                <InventoryList userId={auth.user!.profile.sub} />
+            </main>
+        </div>
+    );
+}
 
 function App() {
-  return (
-      <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-        <h1>Play Economy</h1>
-        <CatalogItemList />
-        <hr />
-        <InventoryList userId={TEST_USER_ID} />
-      </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/authentication/login-callback"  element={<LoginCallback />} />
+                <Route path="/authentication/logout-callback" element={<LogoutCallback />} />
+                <Route path="/register"                       element={<RegisterForm />} />
+                <Route path="/*"                              element={<ProtectedApp />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;

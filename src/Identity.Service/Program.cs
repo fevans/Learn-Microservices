@@ -47,24 +47,37 @@ builder.Services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid
     .AddRoleManager<RoleManager<ApplicationRole>>()
     .AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = "Cookies";
+});
+
 builder.Services.AddAuthentication(options =>
     {
-        options.DefaultScheme = "Cookies";
-        options.DefaultChallengeScheme = "Cookies";
+        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
     })
-    .AddCookie("Cookies");
-builder.Services.AddGamePlatformAuthentication(builder.Configuration);
+    .AddCookie(IdentityConstants.ApplicationScheme, options =>
+    {
+        options.LoginPath = "/Account/Login";
+    });
+// Don't call AddGamePlatformAuthentication here - it conflicts with IdentityServer's auth
 
 
 // After Identity registration, before builder.Build()
 builder.Services
     .AddIdentityServer(options =>
     {
-        options.Authentication.CookieAuthenticationScheme = "Cookies";
+        options.Authentication.CookieAuthenticationScheme = IdentityConstants.ApplicationScheme;
         options.Events.RaiseErrorEvents       = true;
         options.Events.RaiseInformationEvents = true;
         options.Events.RaiseFailureEvents     = true;
         options.Events.RaiseSuccessEvents     = true;
+        
+        // Skip the logout confirmation page
+        options.Authentication.CookieLifetime          = TimeSpan.FromHours(2);
+        options.Authentication.CookieSlidingExpiration = false;
     })
     .AddAspNetIdentity<ApplicationUser>()
     .AddProfileService<CustomProfileService>()
@@ -84,7 +97,11 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

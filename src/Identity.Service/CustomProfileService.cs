@@ -18,13 +18,24 @@ public class CustomProfileService(
         await base.GetProfileDataAsync(context, user);
 
         var roles = await _userManager.GetRolesAsync(user);
-        
+
         var claims = new List<System.Security.Claims.Claim>();
-        
+
         // Role claims
         claims.AddRange(roles.Select(r => new Claim("role", r)));
-        
+
+        // Standard profile claims
+        if (!string.IsNullOrEmpty(user.Email))
+        {
+            claims.Add(new Claim("email", user.Email));
+        }
+        if (!string.IsNullOrEmpty(user.UserName))
+        {
+            claims.Add(new Claim("name", user.UserName));
+        }
+
         // Custom domain claims
+        claims.Add(new Claim("gil", user.Gil.ToString()));
         claims.Add(new Claim("gil_spent", user.GilSpent.ToString()));
 
         // context.IssuedClaims.AddRange(roles.Select(role =>

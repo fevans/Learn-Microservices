@@ -94,11 +94,16 @@ public static class IdentityServerConfig
             {
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile,
+                "roles",
                 "catalog.fullaccess",
                 "inventory.fullaccess",
             },
             AccessTokenLifetime     = 3600,  // 1 hour
             AllowOfflineAccess      = true,  // enables refresh tokens
+            RefreshTokenUsage       = TokenUsage.OneTimeOnly,
+            RefreshTokenExpiration  = TokenExpiration.Sliding,
+            SlidingRefreshTokenLifetime = 86400,  // 24 hours
+            AlwaysIncludeUserClaimsInIdToken = true,
         },
     ];
     

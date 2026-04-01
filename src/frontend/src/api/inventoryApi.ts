@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { AxiosInstance } from 'axios';
 
 const BASE = process.env.REACT_APP_INVENTORY_SERVICE_URL;
 
@@ -10,8 +10,8 @@ export interface InventoryItem {
     acquiredDate: string;
 }
 
-export const getInventoryItems = (userId: string) =>
-    axios.get<InventoryItem[]>(`${BASE}/items?userId=${userId}`).then(r => r.data);
+export const getInventoryItems = (client: AxiosInstance, userId: string) =>
+    client.get<InventoryItem[]>(`${BASE}/items?userId=${userId}`).then(r => r.data);
 
-export const grantItems = (userId: string, catalogItemId: string, quantity: number) =>
-    axios.post(`${BASE}/items`, { userId, catalogItemId, quantity });
+export const grantItems = (client: AxiosInstance, userId: string, catalogItemId: string, quantity: number) =>
+    client.post(`${BASE}/items`, { userId, catalogItemId, quantity });

@@ -31,7 +31,7 @@ builder.Services
     .AddServiceControllers()
     .AddMongo(builder.Configuration)
     .AddMongoRepository<CatalogItem>(collectionName: "items")
-    .AddMassTransitWithRabbitMq(builder.Configuration)
+    .AddMassTransitWithRabbitMq(builder.Configuration,  registerConsumers: true)
     .AddEndpointsApiExplorer()
     .AddSwaggerGen();
 

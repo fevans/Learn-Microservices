@@ -1,15 +1,17 @@
 // frontend/src/components/InventoryList.tsx
 import { useEffect, useState } from 'react';
 import { InventoryItem, getInventoryItems } from '../api/inventoryApi';
+import { useAuthenticatedClient } from '../hooks/useAuthenticatedClient';
 
 interface Props { userId: string; }
 
 export const InventoryList = ({ userId }: Props) => {
+    const client = useAuthenticatedClient();
     const [items, setItems] = useState<InventoryItem[]>([]);
 
     useEffect(() => {
-        if (userId) getInventoryItems(userId).then(setItems);
-    }, [userId]);
+        if (userId) getInventoryItems(client, userId).then(setItems);
+    }, [client, userId]);
 
     return (
         <div>

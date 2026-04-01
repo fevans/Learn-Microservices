@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GamePlatform.Catalog.Contracts" Version="1.0.1" />
+    <PackageReference Include="GamePlatform.Common" Version="1.0.9" />
     <PackageReference Include="MassTransit" Version="8.3.3" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
@@ -19,11 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GamePlatform.Catalog.Contracts\GamePlatform.Catalog.Contracts.csproj" />
-    <ProjectReference Include="..\GamePlatform.Common\GamePlatform.Common.csproj" />
   </ItemGroup>
 
  

@@ -42,7 +42,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMassTransitWithRabbitMq(
         this IServiceCollection services,
         IConfiguration config,
-        Action<IBusRegistrationConfigurator>? configure = null, bool registerConsumers = false)
+        Action<IBusRegistrationConfigurator>? configure = null, bool registerConsumers = true)
     {
         services.AddMassTransit(x =>
         {
@@ -52,9 +52,6 @@ public static class ServiceCollectionExtensions
                 x.AddConsumers(Assembly.GetEntryAssembly());
                 configure?.Invoke(x);
             }
-            
-            
-
             x.UsingRabbitMq((ctx, cfg) =>
             {
                 var settings = config
