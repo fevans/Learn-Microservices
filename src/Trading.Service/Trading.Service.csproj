@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="GamePlatform.Catalog.Contracts" Version="1.0.2" />
+        <PackageReference Include="GamePlatform.Common" Version="1.0.10" />
+        <PackageReference Include="GamePlatform.Identity.Contracts" Version="1.0.0" />
+        <PackageReference Include="GamePlatform.Inventory.Contracts" Version="1.0.0" />
+        <PackageReference Include="MassTransit" Version="8.3.3" />
+        <PackageReference Include="MassTransit.MongoDb" Version="8.3.3" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.3" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+    </ItemGroup>
+
+</Project>
